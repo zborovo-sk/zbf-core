@@ -1,0 +1,171 @@
+<?php
+
+namespace ZborovoSK\ZBFCore\Http;
+
+use ZborovoSK\ZBFCore\ZBFException;
+
+class Request
+{
+    /**
+     * @var string request method - GET, POST, PUT, DELETE
+     */
+    private string $method = 'GET';
+
+    /**
+     * @var string request path - /path
+     */
+    private string $path = '/';
+
+    /**
+     * @var array query params - /path?param=value => ['param' => 'value']
+     */
+    private array $query = [];
+
+    /**
+     * @var array url params - /path/{param} => ['param' => 'value']
+     */
+    private array $params = [];
+
+    /**
+     * @var array cookies
+     */
+    private array $cookies = [];
+
+    /**
+     * @var array headers
+     */
+    private array $headers = [];
+
+    /**
+     * @var string raw body of request
+     */
+    private string $rawBody = '';
+
+    /**
+     * @var array body of request
+     */
+    private array $body = [];
+
+    /**
+     * @var string controller class name
+     */
+    private string $controllerClass = '';
+
+    /**
+     * @var string action name
+     */
+    private string $actionName = '';
+
+    /**
+     * parse path
+     * @var string $originalPath
+     * @return string
+     */
+    private function parsePath(string $originalPath): string
+    {
+        $path = $originalPath;
+
+        //remove query string
+        if(strpos($path, '?') !== false) {
+            $path = substr($path, 0, strpos($path, '?'));
+        }
+        $path = rtrim($path, '/');
+
+        //if path is empty, set it to /
+        if(empty($path)) {
+            $path = '/';
+        }
+
+        return $path;
+    }
+
+
+    public function __construct()
+    {
+        //set method
+        $this->method = $_SERVER['REQUEST_METHOD'];
+
+        //set query params
+        $this->query = $_GET;
+
+        //set path
+        $this->path = $this->parsePath($_SERVER['REQUEST_URI']);
+
+        //set cookies
+        $this->cookies = $_COOKIE;
+
+        //set headers
+        $this->headers = getallheaders();
+
+        //set raw body
+        $this->rawBody = file_get_contents('php://input');
+
+        //set body - based on requests content type
+        if (in_array($this->method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+
+            if (
+                isset($this->headers['Content-Type']) &&
+                strpos($this->headers['Content-Type'], 'application/json') !== false
+            ) {
+                try {
+                    $this->body = json_decode($this->rawBody, true);
+                } catch (\Exception $e) {
+                    throw new ZBFException('Invalid JSON in request body');
+                }
+            } else {
+                //urlencoded and multipart/form-data are parsed to POST array automatically by PHP
+                $this->body = $_POST;
+            }
+
+        }
+
+    }
+
+    /**
+     * Sets params
+     * @param array $params
+     * @return void
+     */
+    public function setParams(array $params): void
+    {
+        $this->params = $params;
+    }
+
+    /**
+     * Sets controller class name
+     * @param string $controllerClass
+     * @return void
+     */
+    public function setControllerClass(string $controllerClass): void
+    {
+        $this->controllerClass = $controllerClass;
+    }
+
+    /**
+     * Sets action name
+     * @param string $actionName
+     * @return void
+     */
+    public function setActionName(string $actionName): void
+    {
+        $this->actionName = $actionName;
+    }
+
+    /**
+     * Get method
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * Get path
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+}

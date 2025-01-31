@@ -1,0 +1,11 @@
+{
+    "name": "zborovo-sk/zbf-core",
+    "description": "A minimalistic php MVC framevork core.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "ZborovoSK\\ZBFCore\\": "src/"
+        }
+    },
+    "require": {}
+}
