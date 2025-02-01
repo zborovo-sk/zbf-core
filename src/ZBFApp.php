@@ -94,8 +94,11 @@ class ZBFApp
         //create controller instance
         try {
             $controller = new $controllerClass($this->request, $this->response, $this->context);
+        } catch (ResponseException $e) {
+            //rethrow exception
+            throw $e;
         } catch (ZBFException $e) {
-            throw new ResponseException(500, ['message' => 'Could not create controller instance'], $e);
+            throw new ResponseException(500, ['message' => 'Error while calling action'], $e);
         }
 
         //check if controller is subclass of Controller
@@ -113,6 +116,9 @@ class ZBFApp
         //call controller method
         try {
             $controller->$actionName();
+        } catch (ResponseException $e) {
+            //rethrow exception
+            throw $e;
         } catch (ZBFException $e) {
             throw new ResponseException(500, ['message' => 'Error while calling action'], $e);
         }

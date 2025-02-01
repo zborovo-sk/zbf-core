@@ -44,5 +44,7 @@ class ResponseException extends ZBFException
             $response->setHeader('Content-Type', Http::CONTENT_TYPE_HTML);
             $response->setData($this->data['message']);
         }
+
+        $response->send();
     }
 }
