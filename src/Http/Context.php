@@ -9,7 +9,7 @@ class Context
     /**
      * @var array data
      */
-    private string $data = [];
+    private array $data = [];
 
     /**
      * Set data to context
