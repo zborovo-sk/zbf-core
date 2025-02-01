@@ -15,6 +15,8 @@ class ResponseCookie
     public bool $secure = false;
     public bool $httpOnly = false;
 
+    private bool $wasSent = false;
+
     public function __construct(
         string $key,
         string $value,
@@ -91,6 +93,9 @@ class Response
 
     public function send(): void
     {
+        if ($this->wasSent) {
+            return;
+        }
         //set status code
         http_response_code($this->statusCode);
 
@@ -112,6 +117,8 @@ class Response
             );
         }
         echo $this->data;
+
+        $this->wasSent = true;
     }
 
     public function json(array $data): void
