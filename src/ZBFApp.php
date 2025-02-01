@@ -7,6 +7,7 @@ use ZborovoSK\ZBFCore\Http\Context;
 use ZborovoSK\ZBFCore\Http\Response;
 use ZborovoSK\ZBFCore\Http\ResponseException;
 
+use ZborovoSK\ZBFCore\Router\Route;
 use ZborovoSK\ZBFCore\Router\Router;
 
 use ZborovoSK\ZBFCore\MVC\Controller;
@@ -65,6 +66,11 @@ class ZBFApp
     public function getContext(): Context
     {
         return $this->context;
+    }
+
+    public function registerRoute(string $method, string $path, string $controller, string $action): void
+    {
+        $this->router->addRoute(new Route($method, $path, $controller, $action));
     }
 
     /**
