@@ -15,8 +15,6 @@ class ResponseCookie
     public bool $secure = false;
     public bool $httpOnly = false;
 
-    private bool $wasSent = false;
-
     public function __construct(
         string $key,
         string $value,
@@ -57,6 +55,8 @@ class Response
      * @var ResponseCookie[]
      */
     private array $cookies = [];
+
+    private bool $wasSent = false;
 
     public function setHeader(string $key, string $value): void
     {
