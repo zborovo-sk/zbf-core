@@ -97,6 +97,32 @@ class View
         return $this->context->get($key, $default);
     }
 
+    /**
+     * Set Layout
+     * @param string $layout
+     * @return void
+     */
+    public function setLayout(string $layout): void
+    {
+        $this->layout = $layout;
+    }
+
+    /**
+     * Set data
+     * @param array $data
+     * @return void
+     */
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * Render file
+     * @param string $file
+     * @param array $data
+     * @return string
+     */
     private function renderFile(string $file, array $data = []): string
     {
         ob_start();
