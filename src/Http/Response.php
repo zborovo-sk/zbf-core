@@ -3,6 +3,7 @@
 namespace ZborovoSK\ZBFCore\Http;
 
 use ZborovoSK\ZBFCore\ZBFException;
+use ZborovoSK\ZBFCore\Http\Http;
 
 class ResponseCookie
 {
@@ -55,12 +56,12 @@ class Response
      */
     private array $cookies = [];
 
-    public function addHeader(string $key, string $value): void
+    public function setHeader(string $key, string $value): void
     {
         $this->headers[$key] = $value;
     }
 
-    public function addCookie(
+    public function setCookie(
         string $key,
         string $value,
         int $expire = null,
@@ -115,15 +116,28 @@ class Response
 
     public function json(array $data): void
     {
-        $this->addHeader('Content-Type', 'application/json');
+        $this->setHeader('Content-Type', Http::CONTENT_TYPE_JSON);
         $this->setData(json_encode($data));
         $this->send();
     }
 
     public function html(string $data): void
     {
-        $this->addHeader('Content-Type', 'text/html');
+        $this->setHeader('Content-Type', Http::CONTENT_TYPE_HTML);
         $this->setData($data);
+        $this->send();
+    }
+
+    public function file(string $path, bool $forceDownload = false, string $downloadName = null): void
+    {
+        if ($forceDownload) {
+            if($downloadName === null){
+                $downloadName = basename($path);
+            }
+            $this->setHeader('Content-Disposition', 'attachment; filename=' . $downloadName);
+        }
+        $this->setHeader('Content-Type', mime_content_type($path));
+        $this->setData(file_get_contents($path));
         $this->send();
     }
 }

@@ -3,13 +3,14 @@
 namespace ZborovoSK\ZBFCore\Http;
 
 use ZborovoSK\ZBFCore\ZBFException;
+use ZborovoSK\ZBFCore\Http\Http;
 
 class Request
 {
     /**
      * @var string request method - GET, POST, PUT, DELETE
      */
-    private string $method = 'GET';
+    private string $method = Http::METHOD_GET;
 
     /**
      * @var string request path - /path
@@ -101,11 +102,16 @@ class Request
         $this->rawBody = file_get_contents('php://input');
 
         //set body - based on requests content type
-        if (in_array($this->method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+        if (in_array($this->method, [
+            Http::METHOD_POST,
+            Http::METHOD_PUT,
+            Http::METHOD_PATCH,
+            Http::METHOD_DELETE
+        ])) {
 
             if (
                 isset($this->headers['Content-Type']) &&
-                strpos($this->headers['Content-Type'], 'application/json') !== false
+                strpos($this->headers['Content-Type'], Http::CONTENT_TYPE_JSON) !== false
             ) {
                 try {
                     $this->body = json_decode($this->rawBody, true);
@@ -167,5 +173,44 @@ class Request
     public function getPath(): string
     {
         return $this->path;
+    }
+
+    /**
+     * Get controller class name
+     * @return string
+     */
+    public function getControllerClass(): string
+    {
+        return $this->controllerClass;
+    }
+
+    /**
+     * Get action name
+     * @return string
+     */
+    public function getActionName(): string
+    {
+        return $this->actionName;
+    }
+
+    /**
+     * Has Header
+     * @param string $key
+     * @return bool
+     */
+    public function hasHeader(string $key): bool
+    {
+        return array_key_exists($key, $this->headers);
+    }
+
+    /**
+     * Get Header
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    public function getHeader(string $key, string $default = ''): string
+    {
+        return $this->headers[$key] ?? $default;
     }
 }
