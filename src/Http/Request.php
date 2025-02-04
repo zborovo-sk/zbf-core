@@ -235,11 +235,11 @@ class Request
 
     /**
      * Get body param
-     * @param string $key
-     * @param string $default
+     * @param mixed $key
+     * @param mixed $default
      * @return string
      */
-    public function getBodyParam(string $key, string $default = ''): string
+    public function getBodyParam(string $key, string $default = ''): mixed
     {
         return $this->body[$key] ?? $default;
     }
