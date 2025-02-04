@@ -215,6 +215,15 @@ class Request
     }
 
     /**
+     * Get headers
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    /**
      * Has body param
      * @param string $key
      * @return bool
@@ -233,6 +242,24 @@ class Request
     public function getBodyParam(string $key, string $default = ''): string
     {
         return $this->body[$key] ?? $default;
+    }
+
+    /**
+     * Get body
+     * @return array
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * Get raw body
+     * @return string
+     */
+    public function getRawBody(): string
+    {
+        return $this->rawBody;
     }
 
     /**
@@ -258,6 +285,15 @@ class Request
     }
 
     /**
+     * Get query
+     * @return array
+     */
+    public function getQuery(): array
+    {
+        return $this->query;
+    }
+
+    /**
      * Has cookie
      * @param string $key
      * @return bool
@@ -276,5 +312,44 @@ class Request
     public function getCookie(string $key, string $default = ''): string
     {
         return $this->cookies[$key] ?? $default;
+    }
+
+    /**
+     * Get cookies
+     * @return array
+     */
+    public function getCookies(): array
+    {
+        return $this->cookies;
+    }
+
+    /**
+     * Has url param
+     * @param string $key
+     * @return bool
+     */
+    public function hasUrlParam(string $key): bool
+    {
+        return array_key_exists($key, $this->params);
+    }
+
+    /**
+     * Get url param
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    public function getUrlParam(string $key, string $default = ''): string
+    {
+        return $this->params[$key] ?? $default;
+    }
+
+    /**
+     * Get url params
+     * @return array
+     */
+    public function getUrlParams(): array
+    {
+        return $this->params;
     }
 }
