@@ -213,4 +213,68 @@ class Request
     {
         return $this->headers[$key] ?? $default;
     }
+
+    /**
+     * Has body param
+     * @param string $key
+     * @return bool
+     */
+    public function hasBodyParam(string $key): bool
+    {
+        return array_key_exists($key, $this->body);
+    }
+
+    /**
+     * Get body param
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    public function getBodyParam(string $key, string $default = ''): string
+    {
+        return $this->body[$key] ?? $default;
+    }
+
+    /**
+     * Has query param
+     * @param string $key
+     * @return bool
+     */
+    public function hasQueryParam(string $key): bool
+    {
+        return array_key_exists($key, $this->query);
+    }
+
+    /**
+     * Get query param
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+
+    public function getQueryParam(string $key, string $default = ''): string
+    {
+        return $this->query[$key] ?? $default;
+    }
+
+    /**
+     * Has cookie
+     * @param string $key
+     * @return bool
+     */
+    public function hasCookie(string $key): bool
+    {
+        return array_key_exists($key, $this->cookies);
+    }
+
+    /**
+     * Get cookie
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    public function getCookie(string $key, string $default = ''): string
+    {
+        return $this->cookies[$key] ?? $default;
+    }
 }
