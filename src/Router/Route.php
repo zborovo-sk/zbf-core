@@ -28,7 +28,7 @@ class Route
         $pathRegex = str_replace('/', '\/', $path);
 
         //replace {param} with named regex group
-        $pathRegex = preg_replace('/{([a-zA-Z0-9]+)}/', '(?P<$1>[a-zA-Z0-9]+)', $pathRegex);
+        $pathRegex = preg_replace('/{([a-zA-Z0-9]+)}/', '(?P<$1>[a-zA-Z0-9\.\-]+)', $pathRegex);
 
         //return regex
         return '/^' . $pathRegex . '$/';
