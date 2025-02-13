@@ -237,7 +237,7 @@ class Request
      * Get body param
      * @param mixed $key
      * @param mixed $default
-     * @return string
+     * @return mixed
      */
     public function getBodyParam(string $key, string $default = ''): mixed
     {
