@@ -51,7 +51,7 @@ $app = new ZBFApp(
 $app->registerRoute(
     'GET',      // HTTP method (use "ALL" or "*" for all methods)
     '/',        // Path (can contain URL parameters like /article/{article_id})
-    App\Controllers\DashboardController::class,  // Controller class
+    ZborovoSK\Admin\App\Controllers\DashboardController::class,  // Controller class
     'index'     // Action method
 );
 
