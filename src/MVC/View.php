@@ -140,7 +140,7 @@ class View
     public function renderLayout(string $layoutName){
         $layoutFile = $this->layoutsDir . '/' . $layoutName . '.php';
         if (!file_exists($layoutFile)) {
-            throw new ResponseException(500, ['message' => 'Layout not found']);
+            throw new ResponseException(500, ['message' => 'Layout not found: ' . $layoutFile]);
         }
 
         return $this->renderFile($layoutFile, ['content' => $this->content]);
@@ -155,7 +155,7 @@ class View
     public function renderTemplate(string $templateName){
         $templateFile = $this->templatesDir . '/' . $templateName . '.php';
         if (!file_exists($templateFile)) {
-            throw new ResponseException(500, ['message' => 'Template not found']);
+            throw new ResponseException(500, ['message' => 'Template not found: ' . $templateFile]);
         }
 
         return $this->renderFile($templateFile);
@@ -170,7 +170,7 @@ class View
     public function element(string $elementName, $data = []){
         $elementFile = $this->elementsDir . '/' . $elementName . '.php';
         if (!file_exists($elementFile)) {
-            throw new ResponseException(500, ['message' => 'Element not found']);
+            throw new ResponseException(500, ['message' => 'Element not found: ' . $elementFile]);
         }
 
         //set/overwrit temporary data
