@@ -77,6 +77,20 @@ class Response
 
     public function redirect(string $url): void
     {
+        if (!empty($this->cookies)) {
+            foreach ($this->cookies as $cookie) {
+                setcookie(
+                    $cookie->key,
+                    $cookie->value,
+                    $cookie->expire,
+                    $cookie->path,
+                    $cookie->domain,
+                    $cookie->secure,
+                    $cookie->httpOnly
+                );
+            }
+        }
+
         header('Location: ' . $url);
         exit;
     }
